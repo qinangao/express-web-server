@@ -1,13 +1,22 @@
-import express from "express";
+const express = require("express");
 
 const app = express();
 
+app.use("/assets", express.static(__dirname + "/public"));
+
+app.set("view engine", "ejs");
+
+app.use("/", (req, res, next) => {
+  console.log(`Request url:${req.url}`);
+  next();
+});
+
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.render("index");
 });
 
 app.get("/person/:id", (req, res) => {
-  res.send(`<html><body><h1>Person: ${req.params.id}</h1></body></html>`);
+  res.render("person", { ID: req.params.id });
 });
 
 app.get("/api", (req, res) => {
