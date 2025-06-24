@@ -1,6 +1,11 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
+
+//body parser
+const urlencodedParser = bodyParser.urlencoded();
+const jsonParser = bodyParser.json();
 
 app.use("/assets", express.static(__dirname + "/public"));
 
@@ -16,7 +21,19 @@ app.get("/", (req, res) => {
 });
 
 app.get("/person/:id", (req, res) => {
-  res.render("person", { ID: req.params.id });
+  res.render("person", { ID: req.params.id, Qstr: req.query.qstr });
+});
+
+app.post("/person", urlencodedParser, (req, res) => {
+  res.send("Thank you");
+  console.log(req.body.firstname);
+  console.log(req.body.lastname);
+});
+
+app.post("/personjson", jsonParser, (req, res) => {
+  res.send("Thank you for the JSON data");
+  console.log(req.body.firstname);
+  console.log(req.body.lastname);
 });
 
 app.get("/api", (req, res) => {
