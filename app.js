@@ -1,11 +1,10 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 
 const app = express();
 
 //body parser
-const urlencodedParser = bodyParser.urlencoded();
-const jsonParser = bodyParser.json();
+const urlencodedParser = express.urlencoded();
+const jsonParser = express.json();
 
 app.use("/assets", express.static(__dirname + "/public"));
 
@@ -36,11 +35,20 @@ app.post("/personjson", jsonParser, (req, res) => {
   console.log(req.body.lastname);
 });
 
-app.get("/api", (req, res) => {
+//RESTful api
+app.get("/api/person/:id", (req, res) => {
+  //get the data from database
   res.json({
     firstname: "John",
     lastname: "Doe",
   });
+});
+
+app.post("/api/person", jsonParser, (req, res) => {
+  //save to the database
+});
+app.delete("/api/person/:id", (res, req) => {
+  //delete from database
 });
 
 const port = process.env.PORT || 3000;
